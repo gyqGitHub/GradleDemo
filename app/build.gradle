@@ -48,7 +48,9 @@ this.afterEvaluate {
     println this.toString() + "-->配置完成"
 }
 
-task c{
+task C{
+    dependsOn ':B'
+
     println this.toString() + '-->this is task C!'
 
     doFirst {

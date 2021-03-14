@@ -76,6 +76,8 @@ this.gradle.addBuildListener(new BuildListener(){
     @Override
     void projectsEvaluated(Gradle gradle) {
         println '*****所有项目配置完成*****'
+        println "任务B的名为：" + B.toString()
+
     }
 
     @Override
@@ -84,11 +86,21 @@ this.gradle.addBuildListener(new BuildListener(){
     }
 })
 
-task a{
+task A{
     println this.toString() + '-> this is task A！'
+
+    doFirst {
+        println this.toString() + '-->task A doFirst'
+    }
 }
 
 task B{
     println(this.toString() + '-> this is task B!')
+
+    dependsOn ':A'
+
+    doFirst {
+        println this.toString() + '-->task B doFirst'
+    }
 }
 
