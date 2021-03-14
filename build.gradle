@@ -24,3 +24,71 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+//1.初始化阶段
+//执行工程的setting.gradle文件。 解析整个工程下的所有Project，构建所有的Project对应的project对象
+//2.配置阶段
+//解析所有project对象中的task，构建好所有的task拓扑图(有向无环图)。
+//这个有向无环图其实就是各个执行一个Task所依赖的其他Task而形成的一种关系图。
+//3.执行阶段
+//执行具体的task，及其依赖的task(先执行目标Task依赖的Task，再执行目标Task)
+
+//this表示根project
+this.beforeEvaluate {
+    println('初始化完成，开始配置前')//不执行
+}
+
+this.afterEvaluate {
+    println this.toString()+ '->配置完成'
+}
+
+this.gradle.buildStarted {
+    println this.toString()+ '->任务执行开始'
+}
+
+this.gradle.buildFinished {////所有project下获取的gradle都是同一个对象
+    println this.gradle.toString() + "--" + this.toString()+ '->所有任务任务执行结束'
+}
+
+this.gradle.addBuildListener(new BuildListener(){
+
+    @Override
+    void buildStarted(Gradle gradle) {
+        println 'buildStarted'//不执行
+    }
+
+    @Override
+    void beforeSettings(Settings settings) {
+        super.beforeSettings(settings)
+        println 'beforeSettings'//不执行
+    }
+
+    @Override
+    void settingsEvaluated(Settings settings) {
+        println 'settingsEvaluated'//不执行
+    }
+
+    @Override
+    void projectsLoaded(Gradle gradle) {
+        println 'projectsLoaded'//不执行
+    }
+
+    @Override
+    void projectsEvaluated(Gradle gradle) {
+        println '*****所有项目配置完成*****'
+    }
+
+    @Override
+    void buildFinished(BuildResult result) {
+        println '*****所有任务执行完成*****'
+    }
+})
+
+task a{
+    println this.toString() + '-> this is task A！'
+}
+
+task B{
+    println(this.toString() + '-> this is task B!')
+}
+

@@ -43,3 +43,19 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+
+this.afterEvaluate {
+    println this.toString() + "-->配置完成"
+}
+
+task c{
+    println this.toString() + '-->this is task C!'
+
+    doFirst {
+        println this.toString() + '-->task C doFirst'
+    }
+}
+
+this.gradle.buildFinished {//所有project下获取的gradle都是同一个对象
+    println this.gradle.toString() + "--" + this.toString()+ '->所有任务任务执行结束'
+}
