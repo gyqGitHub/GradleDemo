@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -55,9 +57,22 @@ task C{
 
     doFirst {
         println this.toString() + '-->task C doFirst'
+
+        println 'today is ' + getDate()
+        println 'today is ' + getDateByJava()
     }
 }
 
 this.gradle.buildFinished {//所有project下获取的gradle都是同一个对象
     println this.gradle.toString() + "--" + this.toString()+ '->所有任务任务执行结束'
+}
+
+def getDate(){
+    def sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)
+    return sdf.format(new Date())
+}
+
+public String getDateByJava(){
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)
+    return sdf.format(new Date())
 }
